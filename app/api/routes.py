@@ -1,7 +1,8 @@
-from flask import Blueprint, jsonify, request
+from flask import json, Blueprint, jsonify, request, flash, redirect, url_for, render_template
 from app.models import MarvelCharacter, User, db
 from .services import token_required
-api = Blueprint('api', __name__, url_prefix='/api')
+from.apiforms import ApiCharForm
+api = Blueprint('api', __name__, template_folder='api_templates', url_prefix='/api')
 
 
 @api.route('/test', methods=['GET'])
@@ -18,23 +19,44 @@ def getMarvelCharacters():
     marvelcharacter = [mc.to_dict() for mc in marvelcharacter]
     return jsonify(marvelcharacter), 200
 
-@api.route('/create', methods=['POST'])
+@api.route('/create', methods=['GET', 'POST'])
 @token_required
 def createMarvelCharacters():
+    marform = ApiCharForm()
+    if request.method =='POST':
+        if marform.validate_on_submit():
+            print(marform.data)
+            newdict = {'name':marform.name.data, 'description':marform.description.data, 'super_power':marform.super_power.data, 'comics_appeared_in':marform.comics_appeared_in.data}
+            newestdict = json.dumps(newdict, indent=2, separators=(',', ': '))
+            loaded_newestdict = json.loads(newestdict)
+            
+            #marvelcharacter = MarvelCharacter(marform.name.data, marform.description.data, marform.comics_appeared_in.data, marform.super_power.data)
+            marvelcharacter = MarvelCharacter(loaded_newestdict)
+            print(marvelcharacter)
+            #try:
+            db.session.add(marvelcharacter)
+            db.session.commit()
+            flash(f'Your new character {marvelcharacter.name} has been made!')
+            return render_template('home.html')
+    return render_template('newcharacter.html', form=marform)
+            #except:
+            #    flash('Sorry, that did not work. Try again', 'danger')
+            #    return redirect(url_for('api.create'))
 
-    try:
-        newdict = request.get_json()
-        print(newdict)
-        a = MarvelCharacter(newdict)
-    except:
-        return jsonify({'error': 'improper request of body data'}), 400
-    try:
+    #try:
+        #newdict = request.get_json()
+        #print(newdict)
+        #a = MarvelCharacter(newdict)
+    #except:
+    #    return jsonify({'error': 'improper request of body data'}), 400
+    #try:
         #Make sure that the character name is unique or else this code here is essentially useless.
-        db.session.add(a)
-        db.session.commit()
-    except:
-        return jsonify({'error': 'This hero is already in the database'}), 400
-    return jsonify({'created': a.to_dict()}), 200
+    #    db.session.add(a)
+    #    db.session.commit()
+    #except:
+    #    return jsonify({'error': 'This hero is already in the database'}), 400
+    #return jsonify({'created': a.to_dict()}), 200
+    
 
 @api.route('/MarvelCharacter/<string:name>', methods=['GET'])
 def getMarvelCharacterName(name):

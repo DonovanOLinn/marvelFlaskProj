@@ -1,0 +1,32 @@
+{% extends 'api_base.html' %}
+
+{% block content %}
+<form class="p-3" method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        <fieldset>
+            {{ form.name.label }}
+            {{ form.name(class='form-control', placeholder='Name...') }}
+        </fieldset>
+    </div>
+    <div class="form-group">
+        <fieldset>
+            {{ form.description.label }}
+            {{ form.description(class='form-control', placeholder='Description...') }}
+        </fieldset>
+    </div>
+    <div class="form-group">
+        <fieldset>
+            {{ form.comics_appeared_in.label }}
+            {{ form.comics_appeared_in(class='form-control', placeholder='Comics Appeared In...') }}
+        </fieldset>
+    </div>
+    <div class="form-group">
+        <fieldset>
+            {{ form.super_power.label }}
+            {{ form.super_power(class='form-control', placeholder='Super Power...') }}
+        </fieldset>
+    </div>
+    {{ form.submit(class='btn btn-block btn-info') }}
+</form>
+{% endblock content %}

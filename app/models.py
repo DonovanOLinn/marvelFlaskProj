@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin
 from uuid import uuid4
+from sqlalchemy import ForeignKey
 from werkzeug.security import generate_password_hash
 from datetime import datetime
 
@@ -21,6 +22,7 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(100))
     date_created = db.Column(db.DateTime, default=datetime.utcnow())
     api_token = db.Column(db.String(100))
+    characters = db.relationship('MarvelCharacter', backref='marvelcharacter_parent_id')
 
     def __init__(self, username, email, password, first_name='', last_name=''):
         self.username = username
@@ -37,6 +39,7 @@ class MarvelCharacter(db.Model):
     comics_appeared_in = db.Column(db.Integer)
     super_power = db.Column(db.String(100), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow())
+    parent_id = db.Column(db.String, db.ForeignKey('user.id'))
 
 
     def __init__(self, dict):
