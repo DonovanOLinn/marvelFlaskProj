@@ -21,11 +21,37 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(100))
     date_created = db.Column(db.DateTime, default=datetime.utcnow())
 
-
     def __init__(self, username, email, password, first_name='', last_name=''):
         self.username = username
         self.email = email.lower()
-        self.frist_name = first_name.title()
+        self.first_name = first_name.title()
         self.last_name = last_name.title()
         self.id = str(uuid4())
         self.password = generate_password_hash(password) 
+
+class MarvelCharacter(db.Model):
+    id = db.Column(db.String(50), primary_key=True)
+    name = db.Column(db.String(100), nullable=False, unique=True)
+    description = db.Column(db.String(400), nullable=False)
+    comics_appeared_in = db.Column(db.Integer)
+    super_power = db.Column(db.String(100), nullable=False)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow())
+
+
+    def __init__(self, dict):
+        self.id = str(uuid4())
+        self.name = dict['name']
+        self.description = dict['description']
+        self.super_power = dict['super_power']
+        self.comics_appeared_in = dict.get('comics_appeared_in', 0)
+
+
+    def to_dict(self):
+            return {
+                'id': self.id,
+                'name': self.name,
+                'description': self.description,
+                'super_power': self.super_power,
+                'comics_appeared_in': self.comics_appeared_in
+            }
+   
