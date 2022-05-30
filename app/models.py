@@ -20,6 +20,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(100))
     last_name = db.Column(db.String(100))
     date_created = db.Column(db.DateTime, default=datetime.utcnow())
+    api_token = db.Column(db.String(100))
 
     def __init__(self, username, email, password, first_name='', last_name=''):
         self.username = username
@@ -54,4 +55,9 @@ class MarvelCharacter(db.Model):
                 'super_power': self.super_power,
                 'comics_appeared_in': self.comics_appeared_in
             }
+
+    def from_dict(self, dict):
+        for key in dict:
+            getattr(self, key)
+            setattr(self, key, dict[key])
    

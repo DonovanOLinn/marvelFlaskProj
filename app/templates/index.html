@@ -3,5 +3,9 @@
 {% block content %}
     <h1 class="mx-auto" style="width: 600px"> Superhero text that goes here</h1>
 
+    {% if current_user.is_authenticated %}
+        Hi {{ current_user.username }}
+    {% endif %}
+
 
 {% endblock content %}
