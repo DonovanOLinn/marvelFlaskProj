@@ -43,12 +43,14 @@ class MarvelCharacter(db.Model):
     owner_id = db.Column(db.String(80), db.ForeignKey('user.id'))
 
 
-    def __init__(self, dict):
+    def __init__(self, dict, owner_id):
         self.id = str(uuid4())
         self.name = dict['name']
         self.description = dict['description']
         self.super_power = dict['super_power']
         self.comics_appeared_in = dict.get('comics_appeared_in', 0)
+        self.owner_id = owner_id
+
 
 
     def to_dict(self):

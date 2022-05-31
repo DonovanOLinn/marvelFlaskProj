@@ -1,4 +1,5 @@
 from flask import json, Blueprint, jsonify, request, flash, redirect, url_for, render_template
+from flask_login import current_user
 from app.models import MarvelCharacter, User, db
 from .services import token_required
 from.apiforms import ApiCharForm
@@ -31,7 +32,7 @@ def createMarvelCharacters():
             loaded_newestdict = json.loads(newestdict)
             
             #marvelcharacter = MarvelCharacter(marform.name.data, marform.description.data, marform.comics_appeared_in.data, marform.super_power.data)
-            marvelcharacter = MarvelCharacter(loaded_newestdict)
+            marvelcharacter = MarvelCharacter(loaded_newestdict, owner_id=current_user.id)
             print(marvelcharacter)
             
             #try:
