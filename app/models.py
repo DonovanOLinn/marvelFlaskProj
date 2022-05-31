@@ -5,6 +5,7 @@ from sqlalchemy import ForeignKey
 from werkzeug.security import generate_password_hash
 from datetime import datetime
 
+
 db = SQLAlchemy()
 login = LoginManager()
 
@@ -14,7 +15,7 @@ def load_user(userid):
     return User.query.get(userid)
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.String(40), primary_key=True)
+    id = db.Column(db.String(80), primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     email = db.Column(db.String(100), nullable=False, unique=True)
     password =db.Column(db.String(250), nullable=False)
@@ -22,7 +23,7 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(100))
     date_created = db.Column(db.DateTime, default=datetime.utcnow())
     api_token = db.Column(db.String(100))
-    characters = db.relationship('MarvelCharacter', backref='marvelcharacter_parent_id')
+    characters = db.relationship('MarvelCharacter', backref='owner')
 
     def __init__(self, username, email, password, first_name='', last_name=''):
         self.username = username
@@ -39,7 +40,7 @@ class MarvelCharacter(db.Model):
     comics_appeared_in = db.Column(db.Integer)
     super_power = db.Column(db.String(100), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow())
-    parent_id = db.Column(db.String, db.ForeignKey('user.id'))
+    owner_id = db.Column(db.String(80), db.ForeignKey('user.id'))
 
 
     def __init__(self, dict):

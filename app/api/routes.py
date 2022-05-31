@@ -20,7 +20,7 @@ def getMarvelCharacters():
     return jsonify(marvelcharacter), 200
 
 @api.route('/create', methods=['GET', 'POST'])
-@token_required
+#@token_required
 def createMarvelCharacters():
     marform = ApiCharForm()
     if request.method =='POST':
@@ -33,11 +33,13 @@ def createMarvelCharacters():
             #marvelcharacter = MarvelCharacter(marform.name.data, marform.description.data, marform.comics_appeared_in.data, marform.super_power.data)
             marvelcharacter = MarvelCharacter(loaded_newestdict)
             print(marvelcharacter)
+            
             #try:
             db.session.add(marvelcharacter)
             db.session.commit()
-            flash(f'Your new character {marvelcharacter.name} has been made!')
-            return render_template('home.html')
+            print(marvelcharacter.owner_id)
+            flash(f'Your new character {marvelcharacter.name} has been made!', category='success')
+            return render_template('newcharacter.html', form=marform)
     return render_template('newcharacter.html', form=marform)
             #except:
             #    flash('Sorry, that did not work. Try again', 'danger')
