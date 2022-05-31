@@ -2,9 +2,21 @@
 
 {%block content %}
 
-    {% for x in MarvelCharacter.query.all() %}
-        {% if x.owner_id == current_user.id %}
-            <h3>{{MarvelCharacter.name}}</h3>
+    {% for x in marvelcharacter %}
+       {% if x.owner_id == current_user.id %}
+        <tr>
+            <br>
+            <td>name : {{ x.name }}</td>
+            <br>
+            <td>description : {{ x.description }}</td>
+            <br>
+            <td>super power : {{ x.super_power }}</td>
+            <br>
+            <td>date created: {{ x.date_created }} </td>
+            <br>
+
+
+        </tr>
         {% endif %}
     {% endfor %}
 

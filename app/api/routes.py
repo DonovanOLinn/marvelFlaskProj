@@ -22,8 +22,9 @@ def getMarvelCharacters():
 
 @api.route('/view', methods=['GET'])
 def viewMarvelChar():
+    marvelcharacter = MarvelCharacter.query.all()
 
-    return render_template('viewcharacter.html')
+    return render_template('viewcharacter.html', marvelcharacter=marvelcharacter)
 
 @api.route('/create', methods=['GET', 'POST'])
 #@token_required
