@@ -20,6 +20,11 @@ def getMarvelCharacters():
     marvelcharacter = [mc.to_dict() for mc in marvelcharacter]
     return jsonify(marvelcharacter), 200
 
+@api.route('/view', methods=['GET'])
+def viewMarvelChar():
+
+    return render_template('viewcharacter.html')
+
 @api.route('/create', methods=['GET', 'POST'])
 #@token_required
 def createMarvelCharacters():
@@ -70,6 +75,20 @@ def getMarvelCharacterName(name):
         return jsonify(marvelcharacter.to_dict()), 200
     return jsonify({'error': f'no such marvel character with the name: {marvelcharacter}'}), 404
 
+
+'''
+
+@api.route('/MarvelCharacter/<string:name>', methods=['GET'])
+def getMarvelCharacterName(name):
+    print(name)
+    marvelcharacter = MarvelCharacter.query.filter_by(name=name).first()
+    print(marvelcharacter)
+    if marvelcharacter:
+        return jsonify(marvelcharacter.to_dict()), 200
+    return jsonify({'error': f'no such marvel character with the name: {marvelcharacter}'}), 404
+
+
+'''
 
 @api.route('/update/<string:id>', methods=['POST'])
 @token_required

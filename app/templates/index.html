@@ -1,10 +1,10 @@
 {% extends 'components/layout.html' %}
 
 {% block content %}
-    <h1 class="mx-auto" style="width: 600px"> Superhero text that goes here</h1>
+    <h1 class=text-center> Welcome to Donovan's Marvel-Create-Your-Own-Superhero??? API</h1>
 
     {% if current_user.is_authenticated %}
-        Hi {{ current_user.username }}
+    <p class="text-center"> Hello {{ current_user.username}}. Thank you for joining us. Feel free to begin creating your characters</p>
     {% endif %}
 
 

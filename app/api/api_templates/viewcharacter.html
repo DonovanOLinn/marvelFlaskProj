@@ -1,0 +1,12 @@
+{% extends 'api_base.html' %}
+
+{%block content %}
+
+    {% for x in MarvelCharacter.query.all() %}
+        {% if x.owner_id == current_user.id %}
+            <h3>{{MarvelCharacter.name}}</h3>
+        {% endif %}
+    {% endfor %}
+
+
+{%endblock content %}
