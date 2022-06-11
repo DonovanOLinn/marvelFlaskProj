@@ -4,10 +4,13 @@ from .auth.routes import auth
 from .models import db, login
 from flask_migrate import Migrate
 from .api.routes import api
+from flask_cors import CORS
 ##This code below instantiates the flask app with the name 
 ##From what I understand, this file will be instantiated first
 app = Flask(__name__)
 app.config.from_object(Config)
+
+CORS(app, origins=['*'])
 app.register_blueprint(auth)
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -19,3 +22,13 @@ app.register_blueprint(api)
 
 
 from . import routes
+
+
+'''
+beatiful soup 4
+pandas dataframe
+pandasdataframe to sql
+**creating a datapipeline
+
+
+'''
